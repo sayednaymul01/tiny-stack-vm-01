@@ -1,6 +1,4 @@
-// A tiny stack virtual machine for make.fun's tiny stack ISA, written from
-// ISA.md in the competition kit: wrapping 32-bit arithmetic, a 256-deep
-// stack, calls, memory, input and output, and every trap's own exit code.
+// Tiny stack VM (kit ISA.md): wrapping 32-bit ints, traps per spec.
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -22,9 +20,9 @@ D(64, 0, 1, 1); D(65, 0, 2, 0); D(80, 0, 1, 0); D(81, 0, 1, 0); D(82, 0, 0, 1);
 D(83, 0, 1, 0);
 
 const STACK_MAX = 256, CALLS_MAX = 64, MEM_WORDS = 256;
-const STEP_LIMIT = 1_000_000, OUTPUT_MAX = 65_536, INT_MIN = -2147483648;
+const STEP_LIMIT = 1000000, OUTPUT_MAX = 65536, INT_MIN = -2147483648;
 
-/** Runs one program to its end: its output bytes and its exit code. */
+// Runs one program: returns its output bytes and exit code.
 function execute(prog: Uint8Array, input: Uint8Array): { bytes: Uint8Array; code: number } {
   const stack = new Int32Array(STACK_MAX);
   const calls = new Int32Array(CALLS_MAX);
